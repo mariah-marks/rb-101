@@ -1,6 +1,6 @@
 =begin
 
-The primary difference is that File::path is a class method and File#path 
+The primary difference is that File::path is a class method and File#path
 is an instance method. Class methods are invoked on the class itself,
 where instance methods are invoked on an object or instance of that class.
 

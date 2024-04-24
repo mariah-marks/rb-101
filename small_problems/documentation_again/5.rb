@@ -1,12 +1,12 @@
 =begin
 
-The documentation states that passing an invalid index will throw an 
+The documentation states that passing an invalid index will throw an
 IndexError exception, unless a default value is provided. Based on this
 information, we can expect the first method call to raise an exception.
 
   (irb):4:in `fetch': index 7 outside of array bounds: -5...5 (IndexError)
 
-The second method call will return the default value, given that the index 
+The second method call will return the default value, given that the index
 provided is outside the array bounds.
 
   beats me

@@ -5,7 +5,7 @@ Date::new returns a new instance of Date, with values delimited by dashes.
 Date::new provides 4 default parameters:
 year = -4712, month = 1, mday = 1, start = Date::Italy.
 
-With no arguments, puts Date.new will return nil and print a string with the 
+With no arguments, puts Date.new will return nil and print a string with the
 default parameters as values:
 
 -4712-1-1
