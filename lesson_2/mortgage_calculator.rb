@@ -1,7 +1,8 @@
 require "yaml"
+
 system 'clear'
 
-MESSAGES = YAML.load_file("mortgage_calculator.yml")
+MESSAGES = YAML.load_file("mortgage_calculator_messages.yml")
 MONTHS_IN_YEAR = 12
 
 def prompt(key)
