@@ -1,0 +1,21 @@
+welcome: "Welcome to Calculator! Please enter your name:"
+greeting: "Hi %{user_name}!"
+valid_name: "Please enter a valid name."
+first_number: "What's the first number?"
+valid_number: "Please enter a valid number."
+round_float: "Please round large numbers to the nearest integer."
+second_number: "What's the second number?"
+operation_choice: "What operation would you like to perform?\n
+  1) add\n
+  2) subtract\n
+  3) multiply\n
+  4) divide"
+valid_operation: "Please enter 1, 2, 3 or 4."
+add: "Adding"
+subtract: "Subtracting"
+multiply: "Multiplying"
+dividing: "Dividing"
+operation_message: "%{operation} the two numbers..."
+display_result: "The result is %{answer}!"
+go_again: "Do you want to perform another calculation?"
+goodbye: "Thanks for using calculator!"

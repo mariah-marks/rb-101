@@ -1,0 +1,11 @@
+greeting: "Welcome to Rock Paper Scissors Spock Lizard!"
+choose_one: "Choose one: rock, paper, scissors, spock, lizard"
+hint: ">> Type the first letter (or the first two for Spock)"
+invalid_choice: "Sorry, that's not a valid choice."
+results: " You chose: %{choice} \n
+  Computer chose: %{computer_choice}"
+display_score: " \n The final score is: %{user} / %{computer}"
+won: " You won!"
+computer_won: " Computer won!"
+tie: " It's a tie!"
+play_again: " Play again? Enter Y for yes."

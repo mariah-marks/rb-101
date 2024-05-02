@@ -1,0 +1,14 @@
+greeting: "Welcome to Mortgage Calculator!"
+get_name: "Please enter your name:"
+invalid_name: "Please enter a valid name."
+hi_name: "Hi, %{name}! "
+loan_amount: "Please enter the amount of your loan:"
+apr: "Enter the APR:"
+loan_duration: "Enter the loan duration in years:"
+display_result: " With a loan amount of $%{loan} and an APR of %{apr}%%,\n
+      Your monthly payment is: $%{payment} per month. \n
+      The total interest over %{months} months is: $%{total_interest}."
+invalid_number: "Sorry, that's not a valid loan amount."
+invalid_apr: "Oops, that doesn't look like a valid APR."
+invalid_duration: "Sorry, that isn't a valid duration."
+go_again: "Would you like to perform another calculation? Enter Y for yes."
