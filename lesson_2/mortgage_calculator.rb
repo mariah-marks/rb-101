@@ -38,7 +38,8 @@ def interest(apr)
 end
 
 def payment(loan, interest, months)
-  loan.to_f * (interest / (1 - ((1 + interest)**(-months))))
+  interest == 0 ? loan.to_f / months : loan.to_f * \
+  (interest / (1 - ((1 + interest)**(-months))))
 end
 
 display "greeting"
