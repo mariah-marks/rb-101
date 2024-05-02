@@ -86,15 +86,15 @@ loop do # main loop
     display "invalid_duration"
   end
 
-  sleep 0.5
-  system "clear"
-  monthly_payment = payment(loan, interest(apr), months(duration)).round(2)
+  monthly_payment = payment(loan, interest(apr), months(duration))
   total_interest = format('%.2f', ((monthly_payment * months(duration)) - \
   loan.to_f))
-  puts format(MESSAGES["display_result"], loan: loan, apr: apr, payment: \
-  monthly_payment, months: months(duration).round, total_interest: \
-  total_interest)
 
+  sleep 0.5
+  system "clear"
+  puts format(MESSAGES["display_result"], loan: loan, apr: apr, payment: \
+  monthly_payment.round(2), months: months(duration).round, total_interest: \
+  total_interest)
   sleep 1
   puts
   prompt "go_again"
