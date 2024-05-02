@@ -29,6 +29,10 @@ def valid_operator?(op)
   %w(1 2 3).include?(op)
 end
 
+def remove_trailing_zeros(num)
+  num.chop! until num.end_with?("0") == false
+end
+
 def months(duration)
   duration.to_f * MONTHS_IN_YEAR
 end
@@ -77,7 +81,7 @@ loop do # main loop
   loop do
     prompt "apr"
     apr = gets.chomp
-    break if valid_apr?(apr)
+    break if valid_apr?(apr) || valid_apr?(remove_trailing_zeros(apr))
     display "invalid_apr"
   end
 
@@ -90,14 +94,15 @@ loop do # main loop
   end
 
   monthly_payment = payment(loan, interest(apr), months(duration))
-  total_interest = format('%.2f', ((monthly_payment * months(duration)) - \
-  loan.to_f))
+  total_interest = (monthly_payment * months(duration)) - loan.to_f
 
   sleep 0.5
   system "clear"
-  puts format(MESSAGES["display_result"], loan: loan, apr: apr, payment: \
-  monthly_payment.round(2), months: months(duration).round, total_interest: \
-  total_interest)
+  puts format(MESSAGES["display_result"], loan: loan, apr: apr.to_f.round(4), \
+                                          payment: monthly_payment.round(2), \
+                                          months: months(duration).round, \
+                                          total_interest: \
+                                          total_interest.round(2))
   sleep 1
   puts
   prompt "go_again"
