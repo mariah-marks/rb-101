@@ -30,7 +30,8 @@ def valid_operator?(op)
 end
 
 def remove_trailing_zeros(num)
-  num.chop! until num.end_with?("0") == false
+  num = num.chop until num.end_with?("0") == false
+  num
 end
 
 def months(duration)
