@@ -1,6 +1,5 @@
 require "yaml"
-
-system 'clear'
+system "clear"
 
 MESSAGES = YAML.load_file("mortgage_calculator_messages.yml")
 MONTHS_IN_YEAR = 12
@@ -46,7 +45,7 @@ display "greeting"
 sleep 0.5
 prompt "get_name"
 
-user_name = ''
+user_name = ""
 loop do
   user_name = gets.chomp.capitalize
   if valid_name?(user_name)
@@ -57,7 +56,7 @@ loop do
   end
 end
 
-system 'clear'
+system "clear"
 puts format(MESSAGES["hi_name"], name: user_name)
 sleep 0.5
 
@@ -66,7 +65,6 @@ loop do # main loop
   loop do
     prompt "loan_amount"
     loan = gets.chomp
-
     break if valid_integer?(loan)
     display "invalid_number"
   end
@@ -83,16 +81,14 @@ loop do # main loop
   loop do
     prompt "loan_duration"
     duration = gets.chomp
-
     break if valid_integer?(duration)
-
     display "invalid_duration"
   end
-  
+
   sleep 0.5
-  system 'clear'
+  system "clear"
   monthly_payment = payment(loan, interest(apr), months(duration)).round(2)
-  total_interest = sprintf('%.2f', ((monthly_payment * months(duration)) - \
+  total_interest = format('%.2f', ((monthly_payment * months(duration)) - \
   loan.to_f))
   puts format(MESSAGES["display_result"], loan: loan, apr: apr, payment: \
   monthly_payment, months: months(duration).round, total_interest: \
@@ -103,5 +99,5 @@ loop do # main loop
   prompt "go_again"
   go_again = gets.chomp.downcase
   break if !go_again.start_with?("y")
-  system 'clear'
+  system "clear"
 end
