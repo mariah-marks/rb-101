@@ -1,0 +1,1 @@
+advice.include?("dino")
