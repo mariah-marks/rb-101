@@ -20,18 +20,19 @@ def valid_integer?(num)
   (num.to_i.to_s == num) && num.to_i > 0
 end
 
-def valid_apr?(num)
-  (num.to_i).between?(0, 100) && ((num.to_i.to_s == num) || \
-  (num.to_f.to_s == num))
+def valid_float?(num)
+  (num.to_f.to_s == num) && num.to_f > 0
 end
 
-def valid_operator?(op)
-  %w(1 2 3).include?(op)
+def valid_apr?(num)
+  (num.to_f < 100) && (valid_integer?(num) || valid_float?(num))
 end
 
 def remove_trailing_zeros(num)
-  num = num.chop until num.end_with?("0") == false
-  num
+  unless valid_integer?(num)
+    num = num.chop until num.end_with?("0") == false
+    num
+  end
 end
 
 def months(duration)
