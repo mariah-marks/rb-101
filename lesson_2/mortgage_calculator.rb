@@ -34,6 +34,16 @@ def get_loan
   end
 end
 
+def get_apr
+  apr = ""
+  loop do
+    prompt "apr"
+    apr = gets.chomp
+    break apr if valid_apr?(apr) || valid_apr?(remove_trailing_zeros(apr))
+    display "invalid_apr"
+  end
+end
+
 def valid_name?(name)
   !name.empty? && !name.strip.empty?
 end
@@ -95,14 +105,7 @@ sleep 0.5
 
 loop do # main loop
   loan = get_loan
-
-  apr = ""
-  loop do
-    prompt "apr"
-    apr = gets.chomp
-    break if valid_apr?(apr) || valid_apr?(remove_trailing_zeros(apr))
-    display "invalid_apr"
-  end
+  apr = get_apr
 
   duration = ""
   loop do
