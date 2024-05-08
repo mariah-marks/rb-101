@@ -20,17 +20,14 @@ def valid_integer?(num)
   (num.to_i.to_s == num) && num.to_i > 0
 end
 
-def valid_float?(num)
-  (num.to_f.to_s == num) && num.to_f > 0
-end
-
 def valid_apr?(num)
-  (num.to_f < 100) && (valid_integer?(num) || valid_float?(num))
+  (0..100).include?(num.to_f) && \
+    ((num.to_i.to_s == num) || (num.to_f.to_s == num))
 end
 
 def remove_trailing_zeros(num)
   unless valid_integer?(num)
-    num = num.chop until num.end_with?("0") == false
+    num.chop! until num.end_with?("0") == false
     num
   end
 end
@@ -40,7 +37,7 @@ def months(duration)
 end
 
 def interest(apr)
-  (apr.to_f / 100) / MONTHS_IN_YEAR
+  (apr / 100) / MONTHS_IN_YEAR
 end
 
 def payment(loan, interest, months)
@@ -49,6 +46,19 @@ def payment(loan, interest, months)
   else
     loan.to_f * (interest / (1 - ((1 + interest)**(-months))))
   end
+end
+
+def round_apr(apr)
+  apr.to_f.round(5)
+end
+
+def format_apr(apr)
+  return apr.floor if apr.to_s.end_with?("0")
+  apr
+end
+
+def format_usd(amount)
+  format('%.2f', amount)
 end
 
 display "greeting"
@@ -95,16 +105,18 @@ loop do # main loop
     display "invalid_duration"
   end
 
-  monthly_payment = payment(loan, interest(apr), months(duration))
+  monthly_payment = payment(loan, interest(round_apr(apr)), months(duration))
   total_interest = (monthly_payment * months(duration)) - loan.to_f
+  apr = format_apr(round_apr(apr))
 
   sleep 0.5
   system "clear"
-  puts format(MESSAGES["display_result"], loan: loan, apr: apr.to_f.round(4), \
-                                          payment: monthly_payment.round(2), \
+  puts format(MESSAGES["display_result"], loan: loan, apr: apr, \
+                                          payment:
+                                          format_usd(monthly_payment), \
                                           months: months(duration).round, \
                                           total_interest: \
-                                          total_interest.round(2))
+                                          format_usd(total_interest))
   sleep 1
   puts
   prompt "go_again"
