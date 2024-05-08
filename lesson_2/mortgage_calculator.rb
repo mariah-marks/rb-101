@@ -44,6 +44,16 @@ def get_apr
   end
 end
 
+def get_duration
+  duration = ""
+  loop do
+    prompt "loan_duration"
+    duration = gets.chomp
+    break duration if valid_integer?(duration)
+    display "invalid_duration"
+  end
+end
+
 def valid_name?(name)
   !name.empty? && !name.strip.empty?
 end
@@ -106,14 +116,7 @@ sleep 0.5
 loop do # main loop
   loan = get_loan
   apr = get_apr
-
-  duration = ""
-  loop do
-    prompt "loan_duration"
-    duration = gets.chomp
-    break if valid_integer?(duration)
-    display "invalid_duration"
-  end
+  duration = get_duration
 
   monthly_payment = payment(loan, interest(round_apr(apr)), months(duration))
   total_interest = (monthly_payment * months(duration)) - loan.to_f
