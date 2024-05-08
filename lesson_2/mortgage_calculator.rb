@@ -84,7 +84,7 @@ def remove_trailing_zeros(num)
 end
 
 def months(duration)
-  duration.to_f * MONTHS_IN_YEAR
+  duration.to_i * MONTHS_IN_YEAR
 end
 
 def interest(apr)
@@ -130,16 +130,17 @@ loop do # main loop
 
   monthly_payment = payment(loan, interest(round_apr(apr)), months(duration))
   total_interest = (monthly_payment * months(duration)) - loan.to_f
-  apr = format_apr(round_apr(apr))
+  formatted_apr = format_apr(round_apr(apr))
+  formatted_months = months(duration)
+  formatted_payment = format_usd(monthly_payment)
+  formatted_interest = format_usd(total_interest)
 
   wait_seconds(:half)
   clear
-  puts format(MESSAGES["display_result"], loan: loan, apr: apr, \
-                                          payment:
-                                          format_usd(monthly_payment), \
-                                          months: months(duration).round, \
-                                          total_interest: \
-                                          format_usd(total_interest))
+  puts format(MESSAGES["display_result"], loan: loan, apr: formatted_apr, \
+                                          payment: formatted_payment, \
+                                          months: formatted_months, \
+                                          total_interest: formatted_interest)
   wait_seconds(:one)
   puts
   prompt "go_again"
