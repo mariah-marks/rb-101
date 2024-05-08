@@ -12,6 +12,18 @@ def display(key)
   puts MESSAGES[key]
 end
 
+def get_name
+  user_name = ""
+  loop do
+    user_name = gets.chomp
+    if valid_name?(user_name)
+      break user_name.strip.capitalize
+    else
+      display "invalid_name"
+    end
+  end
+end
+
 def valid_name?(name)
   !name.empty? && !name.strip.empty?
 end
@@ -65,16 +77,7 @@ display "greeting"
 sleep 0.5
 prompt "get_name"
 
-user_name = ""
-loop do
-  user_name = gets.chomp.capitalize
-  if valid_name?(user_name)
-    user_name.strip!
-    break
-  else
-    display "invalid_name"
-  end
-end
+user_name = get_name
 
 system "clear"
 puts format(MESSAGES["hi_name"], name: user_name)
