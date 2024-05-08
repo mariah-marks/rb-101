@@ -12,6 +12,12 @@ def display(key)
   puts MESSAGES[key]
 end
 
+def wait_seconds(amount)
+  seconds = { half: 0.5,
+              one: 1 }
+  sleep seconds[amount]
+end
+
 def get_name
   user_name = ""
   loop do
@@ -104,14 +110,14 @@ def format_usd(amount)
 end
 
 display "greeting"
-sleep 0.5
+wait_seconds(:half)
 prompt "get_name"
 
 user_name = get_name
 
 system "clear"
 puts format(MESSAGES["hi_name"], name: user_name)
-sleep 0.5
+wait_seconds(:half)
 
 loop do # main loop
   loan = get_loan
@@ -122,7 +128,7 @@ loop do # main loop
   total_interest = (monthly_payment * months(duration)) - loan.to_f
   apr = format_apr(round_apr(apr))
 
-  sleep 0.5
+  wait_seconds(:half)
   system "clear"
   puts format(MESSAGES["display_result"], loan: loan, apr: apr, \
                                           payment:
@@ -130,7 +136,7 @@ loop do # main loop
                                           months: months(duration).round, \
                                           total_interest: \
                                           format_usd(total_interest))
-  sleep 1
+  wait_seconds(:one)
   puts
   prompt "go_again"
   go_again = gets.chomp.downcase
