@@ -24,6 +24,16 @@ def get_name
   end
 end
 
+def get_loan
+  loan = ""
+  loop do
+    prompt "loan_amount"
+    loan = gets.chomp
+    break loan if valid_integer?(loan)
+    display "invalid_number"
+  end
+end
+
 def valid_name?(name)
   !name.empty? && !name.strip.empty?
 end
@@ -84,13 +94,7 @@ puts format(MESSAGES["hi_name"], name: user_name)
 sleep 0.5
 
 loop do # main loop
-  loan = ""
-  loop do
-    prompt "loan_amount"
-    loan = gets.chomp
-    break if valid_integer?(loan)
-    display "invalid_number"
-  end
+  loan = get_loan
 
   apr = ""
   loop do
