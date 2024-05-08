@@ -1,5 +1,4 @@
 require "yaml"
-system "clear"
 
 MESSAGES = YAML.load_file("mortgage_calculator_messages.yml")
 MONTHS_IN_YEAR = 12
@@ -10,6 +9,10 @@ end
 
 def display(key)
   puts MESSAGES[key]
+end
+
+def clear
+  system "clear"
 end
 
 def wait_seconds(amount)
@@ -109,13 +112,14 @@ def format_usd(amount)
   format('%.2f', amount)
 end
 
+clear
 display "greeting"
 wait_seconds(:half)
 prompt "get_name"
 
 user_name = get_name
 
-system "clear"
+clear
 puts format(MESSAGES["hi_name"], name: user_name)
 wait_seconds(:half)
 
@@ -129,7 +133,7 @@ loop do # main loop
   apr = format_apr(round_apr(apr))
 
   wait_seconds(:half)
-  system "clear"
+  clear
   puts format(MESSAGES["display_result"], loan: loan, apr: apr, \
                                           payment:
                                           format_usd(monthly_payment), \
@@ -141,5 +145,5 @@ loop do # main loop
   prompt "go_again"
   go_again = gets.chomp.downcase
   break if !go_again.start_with?("y")
-  system "clear"
+  clear
 end
