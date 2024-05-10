@@ -11,6 +11,10 @@ def display(key)
   puts MESSAGES[key]
 end
 
+def display_with_value(key, pair)
+  puts format(MESSAGES[key], pair)
+end
+
 def clear
   system "clear"
 end
@@ -63,6 +67,18 @@ def get_duration
   end
 end
 
+def get_go_again
+  gets.chomp.downcase
+end
+
+def exit_program?(input)
+  !input.start_with?("y")
+end
+
+def blank_line
+  puts
+end
+
 def valid_name?(name)
   !name.empty? && !name.strip.empty?
 end
@@ -99,17 +115,31 @@ def payment(loan, interest, months)
   end
 end
 
+def total_interest(payment, months, loan)
+  (payment * months) - loan.to_f
+end
+
 def round_apr(apr)
   apr.to_f.round(5)
 end
 
-def format_apr(apr)
-  return apr.floor if apr.to_s.end_with?("0")
-  apr
+def format_value(value)
+  return value.floor.to_s if value.to_s.end_with?("0")
+  value.to_s
 end
 
 def format_usd(amount)
   format('%.2f', amount)
+end
+
+def pair_with_key(value)
+  results = {}
+  fields = [:loan, :apr, :months, :payment, :interest]
+
+  fields.each_with_index do |field, idx|
+    results[field] = value[idx].to_s
+  end
+  results
 end
 
 clear
@@ -120,31 +150,28 @@ prompt "get_name"
 user_name = get_name
 
 clear
-puts format(MESSAGES["hi_name"], name: user_name)
+display_with_value("hi_name", name: user_name)
 wait_seconds(:half)
 
 loop do # main loop
   loan = get_loan
   apr = get_apr
   duration = get_duration
-
   monthly_payment = payment(loan, interest(round_apr(apr)), months(duration))
-  total_interest = (monthly_payment * months(duration)) - loan.to_f
-  formatted_apr = format_apr(round_apr(apr))
-  formatted_months = months(duration)
-  formatted_payment = format_usd(monthly_payment)
-  formatted_interest = format_usd(total_interest)
+  interest = total_interest(monthly_payment, months(duration), loan)
+
+  final_values = [loan, format_value(round_apr(apr)), \
+                  format_value(months(duration)), format_usd(monthly_payment), \
+                  format_usd(interest)]
+  results = pair_with_key(final_values)
 
   wait_seconds(:half)
   clear
-  puts format(MESSAGES["display_result"], loan: loan, apr: formatted_apr, \
-                                          payment: formatted_payment, \
-                                          months: formatted_months, \
-                                          total_interest: formatted_interest)
+  display_with_value("display_result", results)
   wait_seconds(:one)
-  puts
+  blank_line
   prompt "go_again"
-  go_again = gets.chomp.downcase
-  break if !go_again.start_with?("y")
+  go_again = get_go_again
+  break if exit_program?(go_again)
   clear
 end
