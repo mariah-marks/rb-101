@@ -18,6 +18,20 @@ def display_message(key, prompt: false)
   end
 end
 
+def display_with_value(key, pair)
+  puts format(MESSAGES[key], pair)
+end
+
+def pair_with_key(value, score: false)
+  results = {}
+  fields = score ? [:user, :computer] : [:choice, :computer_choice]
+
+  fields.each_with_index do |field, idx|
+    results[field] = value[idx]
+  end
+  results
+end
+
 def display_winner(user, computer)
   if user > computer
     "won"
@@ -90,11 +104,14 @@ loop do # main loop
 
   system "clear"
   sleep 0.5
-  puts format(MESSAGES["results"], choice: user_choices, computer_choice: \
-    computer_choices)
+  match_choices = [user_choices, computer_choices]
+  match_scores = [user_score, computer_score]
+  results = pair_with_key(match_choices)
+  final_score = pair_with_key(match_scores, score: true)
+
+  display_with_value("results", results)
   sleep 0.5
-  puts format(MESSAGES["display_score"], user: user_score, computer: \
-    computer_score)
+  display_with_value("display_score", final_score)
   display_message display_winner(user_score, computer_score)
   sleep 1
   puts
