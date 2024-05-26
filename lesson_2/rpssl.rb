@@ -4,11 +4,50 @@ MESSAGES = YAML.load_file("rpssl_messages.yml")
 
 VALID_CHOICES = %w(rock paper scissors spock lizard)
 
+VALID_ABBREVIATIONS = { "r" => "rock",
+                        "p" => "paper",
+                        "s" => "scissors",
+                        "sp" => "spock",
+                        "l" => "lizard" }
+
 WINNING_COMBINATIONS = { "rock" => ["lizard", "scissors"],
                          "paper" => ["spock", "rock"],
                          "scissors" => ["lizard", "paper"],
                          "spock" => ["scissors", "rock"],
                          "lizard" => ["paper", "spock"] }
+def get_input
+  gets.chomp.downcase
+end
+
+def get_choice
+  choice = ""
+
+  loop do
+    display_message "choose_one", prompt: true
+    choice = get_input
+    break if valid_choice?(VALID_CHOICES, choice)
+
+    if valid_choice?(VALID_ABBREVIATIONS, choice)
+      choice = VALID_ABBREVIATIONS[choice]
+      break
+    else
+      display_message "invalid_choice"
+    end
+  end
+  choice
+end
+
+def get_computer_choice
+  VALID_CHOICES.sample
+end
+
+def store_choice(choice, arr)
+  arr << choice
+end
+
+def valid_choice?(valid_choices, choice)
+  valid_choices.include?(choice)
+end
 
 def display_message(key, prompt: false)
   if prompt
@@ -22,6 +61,20 @@ def display_with_value(key, pair)
   puts format(MESSAGES[key], pair)
 end
 
+def clear
+  system "clear"
+end
+
+def wait_seconds(amount)
+  seconds = { half: 0.5,
+              one: 1 }
+  sleep seconds[amount]
+end
+
+def blank_line
+  puts
+end
+
 def pair_with_key(value, score: false)
   results = {}
   fields = score ? [:user, :computer] : [:choice, :computer_choice]
@@ -32,10 +85,10 @@ def pair_with_key(value, score: false)
   results
 end
 
-def display_winner(user, computer)
-  if user > computer
+def winner(scores)
+  if scores[0] > scores[1]
     "won"
-  elsif computer > user
+  elsif scores[1] > scores[0]
     "computer_won"
   else
     "tie"
@@ -52,72 +105,68 @@ def round_winner(first, second)
   end
 end
 
+def keep_score(winner, score)
+  if winner == "user"
+    score[:user] += 1
+  elsif winner == "computer"
+    score[:computer] += 1
+  end
+end
+
+def three_wins?(score)
+  score[:user] == 3 || score[:computer] == 3
+end
+
+def format_choices(choices)
+  choices.join ", "
+end
+
 def play_again(input)
   input.downcase.start_with?('y')
 end
 
-system "clear"
+clear
 display_message "greeting"
-sleep 0.5
+wait_seconds(:half)
 display_message "hint"
 
 loop do # main loop
-  choice = ""
-  computer_choice = ""
-  round_winner = ""
-  user_score = 0
-  computer_score = 0
+  score = { user: 0, computer: 0 }
   user_choices = []
   computer_choices = []
-  valid_abbreviations = { "r" => "rock",
-                          "p" => "paper",
-                          "s" => "scissors",
-                          "sp" => "spock",
-                          "l" => "lizard" }
 
   loop do
-    loop do
-      display_message "choose_one", prompt: true
-      choice = gets.chomp
-      break if VALID_CHOICES.include? choice
+    choice = get_choice
+    store_choice(choice, user_choices)
 
-      if valid_abbreviations.include? choice
-        choice = valid_abbreviations[choice]
-        user_choices << choice
-        break
-      else
-        display_message "invalid_choice"
-      end
-    end
+    computer_choice = get_computer_choice
+    store_choice(computer_choice, computer_choices)
 
-    computer_choice = VALID_CHOICES.sample
-    computer_choices << computer_choice
-    round_winner = round_winner(choice, computer_choice)
+    match_winner = round_winner(choice, computer_choice)
+    keep_score(match_winner, score)
 
-    user_score += 1 if round_winner == "user"
-    computer_score += 1 if round_winner == "computer"
-    break if user_score == 3 || computer_score == 3
+    break if three_wins?(score)
   end
 
-  user_choices = user_choices.join ", "
-  computer_choices = computer_choices.join ", "
+  user_choices = format_choices(user_choices)
+  computer_choices = format_choices(computer_choices)
 
-  system "clear"
-  sleep 0.5
+  clear
+  wait_seconds(:half)
   match_choices = [user_choices, computer_choices]
-  match_scores = [user_score, computer_score]
+  match_scores = [score[:user], score[:computer]]
   results = pair_with_key(match_choices)
   final_score = pair_with_key(match_scores, score: true)
 
   display_with_value("results", results)
-  sleep 0.5
+  wait_seconds(:half)
   display_with_value("display_score", final_score)
-  display_message display_winner(user_score, computer_score)
-  sleep 1
-  puts
+  display_message winner(match_scores)
+  wait_seconds(:one)
+  blank_line
   display_message "play_again", prompt: true
 
-  user_input = gets.chomp
+  user_input = get_input
   break unless play_again(user_input)
-  system "clear"
+  clear
 end
