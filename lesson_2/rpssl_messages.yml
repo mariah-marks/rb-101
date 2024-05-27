@@ -1,6 +1,9 @@
 greeting: "Welcome to Rock Paper Scissors Spock Lizard!"
+instructions: " -- Rounds continue until one player becomes the grand winner. \n
+-- To become the grand winner, be the first to win 3 rounds. \n
+-- You can type the first letter (or the first two for Spock). \n
+-- Press enter to start."
 choose_one: "Choose one: rock, paper, scissors, spock, lizard"
-hint: ">> Type the first letter (or the first two for Spock)"
 invalid_choice: "Sorry, that's not a valid choice."
 results: " You chose: %{choice} \n
   Computer chose: %{computer_choice}"

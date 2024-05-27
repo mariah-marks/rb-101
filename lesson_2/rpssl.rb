@@ -128,7 +128,11 @@ end
 clear
 display_message "greeting"
 wait_seconds(:half)
-display_message "hint"
+display_message "instructions"
+blank_line
+wait_seconds(:one)
+get_input
+clear
 
 loop do # main loop
   score = { user: 0, computer: 0 }
