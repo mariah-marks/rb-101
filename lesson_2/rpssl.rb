@@ -143,7 +143,13 @@ loop do # main loop
     store_choice(computer_choice, computer_choices)
 
     match_winner = round_winner(choice, computer_choice)
+    round_choices = { choice: choice, computer_choice: computer_choice }
+    blank_line
+    display_with_value("results", round_choices)
+    blank_line
+    display_message(match_winner)
     keep_score(match_winner, score)
+    blank_line
 
     break if three_wins?(score)
   end
