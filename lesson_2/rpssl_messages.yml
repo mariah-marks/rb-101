@@ -10,7 +10,10 @@ results: " You chose: %{choice} \n
 user: " You won this round!"
 computer: " Computer won this round!"
 tie: " It's a tie!"
-display_score: " \n The final score is: %{user} / %{computer}"
+match_score: " Your score: %{user} - Computer's score: %{computer}"
+final_score: " -- Final scores -- \n
+ You: %{user} \n 
+ Computer: %{computer}"
 won: " You won!"
 computer_won: " Computer won!"
 tie: " It's a tie!"

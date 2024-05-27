@@ -41,10 +41,6 @@ def get_computer_choice
   VALID_CHOICES.sample
 end
 
-def store_choice(choice, arr)
-  arr << choice
-end
-
 def valid_choice?(valid_choices, choice)
   valid_choices.include?(choice)
 end
@@ -75,20 +71,10 @@ def blank_line
   puts
 end
 
-def pair_with_key(value, score: false)
-  results = {}
-  fields = score ? [:user, :computer] : [:choice, :computer_choice]
-
-  fields.each_with_index do |field, idx|
-    results[field] = value[idx]
-  end
-  results
-end
-
 def winner(scores)
-  if scores[0] > scores[1]
+  if scores[:user] > scores[:computer]
     "won"
-  elsif scores[1] > scores[0]
+  elsif scores[:computer] > scores[:user]
     "computer_won"
   else
     "tie"
@@ -117,10 +103,6 @@ def three_wins?(score)
   score[:user] == 3 || score[:computer] == 3
 end
 
-def format_choices(choices)
-  choices.join ", "
-end
-
 def play_again(input)
   input.downcase.start_with?('y')
 end
@@ -136,15 +118,10 @@ clear
 
 loop do # main loop
   score = { user: 0, computer: 0 }
-  user_choices = []
-  computer_choices = []
 
   loop do
     choice = get_choice
-    store_choice(choice, user_choices)
-
     computer_choice = get_computer_choice
-    store_choice(computer_choice, computer_choices)
 
     match_winner = round_winner(choice, computer_choice)
     round_choices = { choice: choice, computer_choice: computer_choice }
@@ -153,25 +130,17 @@ loop do # main loop
     blank_line
     display_message(match_winner)
     keep_score(match_winner, score)
+    display_with_value("match_score", score)
     blank_line
 
     break if three_wins?(score)
   end
 
-  user_choices = format_choices(user_choices)
-  computer_choices = format_choices(computer_choices)
-
-  clear
   wait_seconds(:half)
-  match_choices = [user_choices, computer_choices]
-  match_scores = [score[:user], score[:computer]]
-  results = pair_with_key(match_choices)
-  final_score = pair_with_key(match_scores, score: true)
-
-  display_with_value("results", results)
-  wait_seconds(:half)
-  display_with_value("display_score", final_score)
-  display_message winner(match_scores)
+  blank_line
+  display_with_value("final_score", score)
+  blank_line
+  display_message winner(score)
   wait_seconds(:one)
   blank_line
   display_message "play_again", prompt: true
