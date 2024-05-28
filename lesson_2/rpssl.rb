@@ -99,6 +99,10 @@ def keep_score(winner, score)
   end
 end
 
+def increment_round(rounds)
+    rounds[:round] += 1
+end
+
 def three_wins?(score)
   score[:user] == 3 || score[:computer] == 3
 end
@@ -118,8 +122,10 @@ clear
 
 loop do # main loop
   score = { user: 0, computer: 0 }
+  rounds = { round: 1 }
 
   loop do
+    display_with_value("round", rounds)
     choice = get_choice
     computer_choice = get_computer_choice
 
@@ -132,6 +138,7 @@ loop do # main loop
     keep_score(match_winner, score)
     display_with_value("match_score", score)
     blank_line
+    increment_round(rounds)
 
     break if three_wins?(score)
   end
