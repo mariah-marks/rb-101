@@ -112,9 +112,9 @@ def play_again(input)
 end
 
 clear
-display_message "greeting"
+display_message("greeting")
 wait_seconds(:half)
-display_message "instructions"
+display_message("instructions")
 blank_line
 wait_seconds(:one)
 get_input
@@ -150,7 +150,7 @@ loop do # main loop
   display_message winner(scores)
   wait_seconds(:one)
   blank_line
-  display_message "play_again", prompt: true
+  display_message("play_again", prompt: true)
 
   user_input = get_input
   break unless play_again(user_input)

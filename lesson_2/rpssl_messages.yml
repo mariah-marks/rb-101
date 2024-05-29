@@ -12,7 +12,7 @@ user: " You won this round!"
 computer: " Computer won this round!"
 tie: " It's a tie!"
 match_score: " Your score: %{user} - Computer's score: %{computer}"
-final_score: " -- Final scores -- \n
+final_score: " -- Final Scores -- \n
  You: %{user} \n 
  Computer: %{computer}"
 won: " You won!"
