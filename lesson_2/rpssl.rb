@@ -53,8 +53,8 @@ def display_message(key, prompt: false)
   end
 end
 
-def display_with_value(key, pair)
-  puts format(MESSAGES[key], pair)
+def display_message_with_values(key, values)
+  puts format(MESSAGES[key], values)
 end
 
 def clear
@@ -81,7 +81,7 @@ def winner(scores)
   end
 end
 
-def round_winner(first, second)
+def get_match_winner(first, second)
   if WINNING_COMBINATIONS[first].include?(second)
     "user"
   elsif WINNING_COMBINATIONS[second].include?(first)
@@ -91,20 +91,20 @@ def round_winner(first, second)
   end
 end
 
-def keep_score(winner, score)
+def increment_score(winner, scores)
   if winner == "user"
-    score[:user] += 1
+    scores[:user] += 1
   elsif winner == "computer"
-    score[:computer] += 1
+    scores[:computer] += 1
   end
 end
 
 def increment_round(rounds)
-    rounds[:round] += 1
+  rounds[:round] += 1
 end
 
-def three_wins?(score)
-  score[:user] == 3 || score[:computer] == 3
+def three_wins?(scores)
+  scores[:user] == 3 || scores[:computer] == 3
 end
 
 def play_again(input)
@@ -121,33 +121,33 @@ get_input
 clear
 
 loop do # main loop
-  score = { user: 0, computer: 0 }
+  scores = { user: 0, computer: 0 }
   rounds = { round: 1 }
 
   loop do
-    display_with_value("round", rounds)
+    display_message_with_values("round", rounds)
     choice = get_choice
     computer_choice = get_computer_choice
 
-    match_winner = round_winner(choice, computer_choice)
+    match_winner = get_match_winner(choice, computer_choice)
     round_choices = { choice: choice, computer_choice: computer_choice }
     blank_line
-    display_with_value("results", round_choices)
+    display_message_with_values("results", round_choices)
     blank_line
     display_message(match_winner)
-    keep_score(match_winner, score)
-    display_with_value("match_score", score)
+    increment_score(match_winner, scores)
+    display_message_with_values("match_score", scores)
     blank_line
     increment_round(rounds)
 
-    break if three_wins?(score)
+    break if three_wins?(scores)
   end
 
   wait_seconds(:half)
   blank_line
-  display_with_value("final_score", score)
+  display_message_with_values("final_score", scores)
   blank_line
-  display_message winner(score)
+  display_message winner(scores)
   wait_seconds(:one)
   blank_line
   display_message "play_again", prompt: true
